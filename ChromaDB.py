@@ -51,20 +51,21 @@ try:
 except Exception as e:
     print(f"Error {e}")
 
-
-text="How can machine be intelligent"
-result=5
-print(f"Top {result} matches based on cosine similarity")
-try:
-    results=collection.query(
+while True:
+   text=input("Enter your query or exit to stop:")
+   if text.lower()=='exit':
+       break
+   print(f"Top match based on cosine similarity")
+   try:
+        results=collection.query(
         query_texts=[text],
-        n_results=result,
+        n_results=1,
         include=['documents','metadatas','distances'])
-    if results and results['documents'] and results['documents'][0]:
-        for i in range(len(results['documents'][0])):
-            print(f"Title: {results['metadatas'][0][i]['title']}")
-            print(f"Cosine distance: {results['distances'][0][i]}")
-    else:
-        print(f"No matches found")
-except Exception as e:
+        if results and results['documents'] and results['documents'][0]:
+         print(f"Title: {results['metadatas'][0][0]['title']}")
+         print(f"Summary: {results['documents'][0][0]}")
+         print(f"Cosine distance: {results['distances'][0][0]}")
+        else:
+         print(f"No matching data found")
+   except Exception as e:
     print(f"Error {e}")
